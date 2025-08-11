@@ -30,6 +30,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          local-dir: dist
+          local-dir: dist/
           server-dir: ${{ secrets.FTP_PATH }}
           dangerous-clean-slate: false
