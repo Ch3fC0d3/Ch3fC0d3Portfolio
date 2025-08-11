@@ -105,3 +105,6 @@ run
 at
 %DATE%
 %TIME%
+Another
+deploy
+trigger
