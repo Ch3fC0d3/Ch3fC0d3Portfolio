@@ -112,3 +112,4 @@ Deployment trigger: 2025-08-11T17:03:19.8304173-05:00
 Deployment trigger after FTP_PATH update: 2025-08-11T17:23:22.7676142-05:00
 Deployment trigger to domain root: 2025-08-11T17:35:23.5071807-05:00
 Deploy trigger to /public_html: 2025-08-11T17:51:06.9393854-05:00
+Deploy trigger to root: 2025-08-11T18:48:07.0950714-05:00
