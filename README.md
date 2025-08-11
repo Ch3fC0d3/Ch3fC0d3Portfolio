@@ -93,3 +93,5 @@ The terminal interface includes accessibility features:
 
 MIT
 # Ch3fC0d3Portfolio
+Deployment
+trigger
