@@ -95,3 +95,6 @@ MIT
 # Ch3fC0d3Portfolio
 Deployment
 trigger
+Workflow
+pin
+test
