@@ -31,6 +31,6 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: dist/
-          # Deploy to domain root explicitly
-          server-dir: /home/bjd0iancoh4j/public_html/
+          # Deploy relative to FTP user's home (root of public site)
+          server-dir: /
           dangerous-clean-slate: false
