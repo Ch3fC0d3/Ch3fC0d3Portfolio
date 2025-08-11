@@ -28,7 +28,7 @@ jobs:
           server: butterandbytes.com
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
+          protocol: ftp
           port: 21
           local-dir: dist/
           # Ensure trailing slash (action requires folder format). Double // is OK on FTP.
