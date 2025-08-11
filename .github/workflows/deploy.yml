@@ -31,6 +31,6 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: dist/
-          # Ensure trailing slash (action requires folder format). Double // is OK on FTP.
-          server-dir: ${{ secrets.FTP_PATH }}/
+          # Deploy to domain root explicitly
+          server-dir: /home/bjd0iancoh4j/public_html/
           dangerous-clean-slate: false
