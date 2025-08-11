@@ -31,5 +31,6 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: dist/
-          server-dir: ${{ secrets.FTP_PATH }}
+          # Ensure trailing slash (action requires folder format). Double // is OK on FTP.
+          server-dir: ${{ secrets.FTP_PATH }}/
           dangerous-clean-slate: false
