@@ -100,3 +100,8 @@ pin
 test
 Redeploy
 trigger
+Deploy
+run
+at
+%DATE%
+%TIME%
