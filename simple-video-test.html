@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Video Test</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+            font-family: monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .video-container {
+            max-width: 800px;
+            border: 2px solid #00ff00;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 100%;
+            display: block;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            background: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .log {
+            width: 100%;
+            max-width: 800px;
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Video Test</h1>
+    
+    <div class="video-container">
+        <!-- Using relative path to the video file -->
+        <video id="videoPlayer" controls>
+            <source src="public/butter.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="controls">
+        <button onclick="document.getElementById('videoPlayer').play()">Play</button>
+        <button onclick="document.getElementById('videoPlayer').pause()">Pause</button>
+        <button onclick="checkVideoFile()">Check Video File</button>
+    </div>
+    
+    <div class="log" id="log">Log messages will appear here...</div>
+    
+    <script>
+        const video = document.getElementById('videoPlayer');
+        const log = document.getElementById('log');
+        
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        video.addEventListener('loadstart', () => addLog('Video load started'));
+        video.addEventListener('loadeddata', () => {
+            addLog(`Video loaded successfully! Dimensions: ${video.videoWidth}x${video.videoHeight}, Duration: ${video.duration.toFixed(2)}s`);
+        });
+        video.addEventListener('error', (e) => {
+            addLog(`Error loading video: ${video.error ? video.error.message : 'Unknown error'}`);
+            console.error('Video error:', video.error);
+        });
+        video.addEventListener('playing', () => addLog('Video is playing'));
+        video.addEventListener('pause', () => addLog('Video paused'));
+        
+        // Check if file exists using fetch
+        function checkVideoFile() {
+            addLog('Checking video file...');
+            
+            // Try different paths
+            const paths = [
+                'public/butter.mp4',
+                '/public/butter.mp4',
+                '/butter.mp4',
+                'butter.mp4'
+            ];
+            
+            paths.forEach(path => {
+                fetch(path)
+                    .then(response => {
+                        if (response.ok) {
+                            addLog(`✅ Path ${path} is accessible (${response.status})`);
+                        } else {
+                            addLog(`❌ Path ${path} returned status: ${response.status}`);
+                        }
+                    })
+                    .catch(error => {
+                        addLog(`❌ Path ${path} error: ${error.message}`);
+                    });
+            });
+        }
+        
+        // Initial log
+        addLog('Page loaded. Video element initialized.');
+    </script>
+</body>
+</html>

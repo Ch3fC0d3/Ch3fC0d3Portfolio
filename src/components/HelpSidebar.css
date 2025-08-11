@@ -1,0 +1,185 @@
+.help-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100vh;
+  background-color: #1a1a1a;
+  border-left: 1px solid #333;
+  color: #f0f0f0;
+  font-family: 'Fira Code', monospace;
+  z-index: 1000;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.help-sidebar-header {
+  padding: 15px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #222;
+}
+
+.help-sidebar-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #00FF00;
+}
+
+.help-sidebar-content {
+  padding: 15px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.help-sidebar-footer {
+  padding: 10px 15px;
+  border-top: 1px solid #333;
+  font-size: 0.8rem;
+  text-align: center;
+  background-color: #222;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #f0f0f0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.close-btn:hover {
+  background-color: #333;
+}
+
+.command-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.command-button {
+  background-color: #333;
+  border: 1px solid #555;
+  color: #00FF00;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.command-button:hover {
+  background-color: #444;
+  transform: translateY(-2px);
+}
+
+.command-button:active {
+  transform: translateY(0);
+}
+
+.command-categories h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #00FF00;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+}
+
+.command-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.command-list li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.command-list code {
+  background-color: #333;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-right: 10px;
+  color: #00FF00;
+  font-family: 'Fira Code', monospace;
+  min-width: 120px;
+}
+
+/* Clickable command chip */
+.command-chip {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.command-chip code {
+  display: inline-block;
+  background-color: #333;
+  border: 1px solid #555;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.command-chip:hover code {
+  background-color: #3a3a3a;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.command-chip:active code {
+  transform: translateY(0);
+}
+
+.help-tips ul {
+  padding-left: 20px;
+}
+
+.help-tips li {
+  margin-bottom: 8px;
+}
+
+.help-tips code {
+  background-color: #333;
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: #00FF00;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Animation for opening */
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.help-sidebar {
+  animation: slideIn 0.3s forwards;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .help-sidebar {
+    width: 100%;
+  }
+}

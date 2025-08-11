@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebM Video Test</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+            font-family: monospace;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+        .test-section {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+            border: 1px solid #00ff00;
+            padding: 15px;
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        video {
+            width: 100%;
+            display: block;
+            border: 1px solid #333;
+        }
+        .controls {
+            margin: 10px 0;
+        }
+        button {
+            background: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .log {
+            width: 100%;
+            max-width: 800px;
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Format Compatibility Test</h1>
+    
+    <!-- Canvas Video Alternative -->
+    <div class="test-section">
+        <h2>Canvas Background Animation</h2>
+        <canvas id="animationCanvas" width="800" height="400" style="width:100%; border:1px solid #00ff00;"></canvas>
+        <div class="controls">
+            <button onclick="startCanvasAnimation()">Start Animation</button>
+            <button onclick="stopCanvasAnimation()">Stop Animation</button>
+        </div>
+    </div>
+
+    <!-- Original MP4 Test -->
+    <div class="test-section">
+        <h2>MP4 Video Test</h2>
+        <div class="video-container">
+            <video id="mp4Player" controls preload="metadata" playsinline poster="./public/fresh.png">
+                <!-- Try common relative paths in order -->
+                <source src="./public/butter.mp4" type="video/mp4">
+                <source src="public/butter.mp4" type="video/mp4">
+                <source src="./butter.mp4" type="video/mp4">
+                <source src="/butter.mp4" type="video/mp4">
+                Your browser does not support MP4 videos.
+            </video>
+        </div>
+        <div class="controls">
+            <button onclick="document.getElementById('mp4Player').play()">Play MP4</button>
+            <button onclick="document.getElementById('mp4Player').pause()">Pause MP4</button>
+        </div>
+    </div>
+    
+    <!-- Autoplay + Loop (muted required) -->
+    <div class="test-section">
+        <h2>Autoplay + Loop (Muted)</h2>
+        <div class="video-container">
+            <video id="mp4Auto" autoplay muted loop playsinline preload="auto">
+                <source src="./public/butter.mp4" type="video/mp4">
+                <source src="public/butter.mp4" type="video/mp4">
+                <source src="./butter.mp4" type="video/mp4">
+                <source src="/butter.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="controls">
+            <button onclick="document.getElementById('mp4Auto').pause()">Pause Autoplay</button>
+            <button onclick="document.getElementById('mp4Auto').play()">Resume Autoplay</button>
+        </div>
+    </div>
+    
+    <div class="log" id="log">Log messages will appear here...</div>
+    
+    <script>
+        const log = document.getElementById('log');
+        const mp4Video = document.getElementById('mp4Player');
+        const canvas = document.getElementById('animationCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId = null;
+        
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        // MP4 video event listeners
+        mp4Video.addEventListener('loadstart', () => addLog('MP4 video: Load started'));
+        mp4Video.addEventListener('loadeddata', () => {
+            addLog(`MP4 video: Loaded successfully! Dimensions: ${mp4Video.videoWidth}x${mp4Video.videoHeight}, Duration: ${mp4Video.duration.toFixed(2)}s`);
+        });
+        mp4Video.addEventListener('error', (e) => {
+            addLog(`MP4 video error: ${mp4Video.error ? mp4Video.error.message : 'Unknown error'}`);
+            console.error('MP4 video error:', mp4Video.error);
+        });
+        
+        // Canvas animation as fallback
+        function startCanvasAnimation() {
+            if (animationId) return;
+            
+            addLog('Starting canvas animation');
+            
+            let hue = 0;
+            const particles = [];
+            
+            // Create initial particles
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speedX: Math.random() * 2 - 1,
+                    speedY: Math.random() * 2 - 1,
+                    hue: Math.random() * 360
+                });
+            }
+            
+            function animate() {
+                // Semi-transparent background to create trail effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Update and draw particles
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    
+                    // Update position
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    
+                    // Bounce off edges
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                    
+                    // Draw particle
+                    ctx.fillStyle = `hsla(${p.hue}, 100%, 50%, 0.8)`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Slowly change hue
+                    p.hue = (p.hue + 0.2) % 360;
+                }
+                
+                // Global hue rotation for background glow
+                hue = (hue + 0.5) % 360;
+                
+                // Add occasional glow effect
+                if (Math.random() > 0.97) {
+                    const glow = {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 50 + 20
+                    };
+                    
+                    const gradient = ctx.createRadialGradient(
+                        glow.x, glow.y, 0,
+                        glow.x, glow.y, glow.size
+                    );
+                    gradient.addColorStop(0, `hsla(${hue}, 100%, 60%, 0.3)`);
+                    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        function stopCanvasAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+                addLog('Canvas animation stopped');
+                
+                // Clear canvas
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        
+        // Initial log
+        addLog('Page loaded. Testing video compatibility...');
+        
+        // Check paths
+        ['./public/butter.mp4', 'public/butter.mp4', './butter.mp4', 'butter.mp4', '/butter.mp4'].forEach(path => {
+            fetch(path)
+                .then(response => {
+                    addLog(`Path "${path}" status: ${response.status} ${response.ok ? '✓' : '✗'}`);
+                })
+                .catch(error => {
+                    addLog(`Path "${path}" error: ${error.message}`);
+                });
+        });
+    </script>
+</body>
+</html>
