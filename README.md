@@ -117,3 +117,4 @@ Redeploy after root FTP secrets confirmed: 2025-08-11T18:59:41.2512264-05:00
 Redeploy with cPanel credentials: 2025-08-12T11:29:28.7133446-05:00
 Redeploy with FTPS protocol: 2025-08-12T11:44:04.2243985-05:00
 Redeploy with SFTP protocol: 2025-08-12T12:16:26.5652988-05:00
+Redeploy with SFTP protocol on port 22: 2025-08-12T12:19:23.6964796-05:00
